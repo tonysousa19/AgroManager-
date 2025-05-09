@@ -1,88 +1,66 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard</title>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7" crossorigin="anonymous">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
-    
+{% extends "base.html" %}
+{% load static %}
 
+{% block page_titlle %}
+Lista de Máquinas
+{% endblock page_titlle %}
 
-    <!-- SIDEBAR -->
-    <style>
-        body {
-          overflow-x: hidden;
-        }
-        .sidebar {
-          height: 100vh;
-          position: fixed;
-          width: 250px;
-          background-color: #f8f9fa;
-          padding-top: 1rem;
-          box-shadow: 2.5px 0 10px rgba(0, 0, 0, 0.1)
-        }
-        .sidebar a {
-          display: block;
-          padding: 0.75rem 1.25rem;
-          color: #333;
-          text-decoration: none;
-        }
-        .sidebar a:hover {
-          background-color: #e9ecef;
-        }
-        .main-content {
-          margin-left: 250px;
-          padding: 2rem;
-        }
-      </style>
-</head>
-<body>
-    <div class="sidebar ">
-        <h4 class="text-center mb-4">AgroManager</h4>
+{% block content %}
+<div class="container mt-5">
+    <h1 class="mb-4 text-center">Lista de Máquinas</h1>
 
-        {% if request.user.cargo == 'adm' %}
-        <a class="bi bi-house me-2" href="../../home"> Início</a>
+{% if maquinas %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for maquina in maquinas %}
+        <div class="col">
+            <div class="card shadow-sm h-100">
+                <div class="card-body">
+                    <h5 class="card-title">{{ maquina.nome }}</h5>
+                    <p class="card-text">
+                        <strong>Condição:</strong> 
+                        <span class="badge {% if maquina.condicao == 'Nova' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ maquina.condicao }}
+                        </span><br>
+                        <strong>Ano:</strong> {{ maquina.ano }}<br>
+                        <strong>Nº Série:</strong> {{ maquina.numero_de_serie }}
+                    </p>
 
-        <a class="bi bi-bar-chart-line me-2" href=""> Dashboard</a>
+                    <div id="carouselExampleControls{{ maquina.pk }}" class="carousel slide" data-bs-ride="carousel">
+                        <div class="carousel-inner">
+                            {% for imagem in maquina.imagens.all %}
+                            <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                                <img src="{{ imagem.imagem.url }}" class="d-block w-100" alt="Imagem da máquina">
+                            </div>
+                            {% endfor %}
+                        </div>
+                        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls{{ maquina.pk }}" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls{{ maquina.pk }}" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button>
+                    </div>
 
-        <a class="bi bi-gear me-2" href="../../admin/"> Administração do Sistema</a>
+                    <div class="d-flex justify-content-between mt-3">
+                        <a href="{% url 'editar_maquinas' pk=maquina.pk %}" class="btn btn-outline-secondary btn-sm">Editar</a>
+                        <a href="{% url 'deletar_maquinas' pk=maquina.pk %}" class="btn btn-outline-danger btn-sm">Excluir</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+{% endfor %}
+    </div>
+    {% else %}
+    <div class="text-center mt-5">
+        <img src="{% static 'no-data.svg' %}" alt="Sem dados" width="200">
+        <p class="text-muted mt-3">Nenhuma máquina cadastrada...</p>
+    </div>
+    {% endif %}
 
-        <a class="bi bi bi-people-fill me-2" href=""> Funcionários</a>
-
-        <a class="bi bi-clipboard2-check me-2" href="#"> Emitir relatorios</a>
-
-        <a class="bi bi-fan me-2" href=""> Máquinas</a>
-
-        <a class="bi bi-tools me-2" href="../../manutencoes/lista-manutencoes"> Manutenções</a>
-
-        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
-
-
-        {% elif request.user.cargo == 'gestor' %}
-        <a class="bi bi-bar-chart-line me-2" href=""> Dashboard</a>
-        <a class="bi bi-clipboard2-check me-2" href="#"> Emitir relatorios</a>
-        <a class="bi bi bi-people-fill me-2" href=""> Funcionários</a>
-        <a class="bi bi-fan me-2" href="#"> Máquinas</a>
-        <a class="bi bi-tools me-2" href="../manutencoes/lista-manutencoes"> Manutenções</a>
-        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
-
-
-        {% elif request.user.cargo == 'func'%}
-        <a class="bi bi-fan me-2" href="#"> Máquinas</a>
-        <a class="bi bi-tools me-2" href="../manutencoes/lista-manutencoes"> Manutenções</a>
-        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
-
-
-        {% endif %}
-
-      </div>
-      
-      <div class="main-content">
-        <h1>Lista de maquinas</h1>
-        <p>Conteúdo da lista de maquinas aqui...</p>
-      </div>
-      
-      <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
-</body>
-</html> 
+    <a href="{% url 'criar_maquinas' %}" class="btn btn-primary btn-lg position-fixed bottom-0 end-0 m-4 rounded-circle" title="Nova Máquina">
+        +
+    </a>
+</div>
+{% endblock content %}

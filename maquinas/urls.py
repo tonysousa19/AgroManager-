@@ -1,12 +1,20 @@
-from django.contrib import admin
-from django.urls import path
-from .views import MaquinaListView, MaquinaCreateView, MaquinaUpdateView, MaquinaDeleteView
+from django.urls import path, include
+from .views import (
+    MaquinaCreateView,
+    MaquinaListView,
+    MaquinaDeleteView,
+    MaquinaUpdateView,
+)
 
 urlpatterns = [
-    path("lista-maquinas/", MaquinaListView.as_view(), name='lista_maquinas'),
-    path("criar-maquina/", MaquinaCreateView.as_view(), name='criar_maquina'),
-    path("editar-maquina/", MaquinaUpdateView.as_view(), name='editar_maquina'),
-    path("deletar-maquina/", MaquinaDeleteView.as_view(), name='deletar_maquina'),
-
-
+    path("criar-maquinas/", MaquinaCreateView.as_view(), name="criar_maquinas"),
+    path("lista-maquinas/", MaquinaListView.as_view(), name="listar_maquinas"),
+    path(
+        "deletar-maquinas/<int:pk>/",
+        MaquinaDeleteView.as_view(),
+        name="deletar_maquinas",
+    ),
+    path(
+        "editar-maquinas//<int:pk>", MaquinaUpdateView.as_view(), name="editar_maquinas"
+    ),
 ]

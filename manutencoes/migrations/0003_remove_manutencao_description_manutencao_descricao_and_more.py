@@ -6,22 +6,24 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('manutencoes', '0002_manutencao_custo_manutencao_pecas_usadas'),
+        ("manutencoes", "0002_manutencao_custo_manutencao_pecas_usadas"),
     ]
 
     operations = [
         migrations.RemoveField(
-            model_name='manutencao',
-            name='description',
+            model_name="manutencao",
+            name="description",
         ),
         migrations.AddField(
-            model_name='manutencao',
-            name='descricao',
-            field=models.TextField(default='', verbose_name='Descrição'),
+            model_name="manutencao",
+            name="descricao",
+            field=models.TextField(default="", verbose_name="Descrição"),
         ),
         migrations.AlterField(
-            model_name='manutencao',
-            name='pecas_usadas',
-            field=models.CharField(blank=True, max_length=255, verbose_name='Peças Utilizadas'),
+            model_name="manutencao",
+            name="pecas_usadas",
+            field=models.CharField(
+                blank=True, max_length=255, verbose_name="Peças Utilizadas"
+            ),
         ),
     ]

@@ -6,18 +6,23 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('manutencoes', '0001_initial'),
+        ("manutencoes", "0001_initial"),
     ]
 
     operations = [
         migrations.AddField(
-            model_name='manutencao',
-            name='custo',
-            field=models.DecimalField(decimal_places=2, default=0, max_digits=10, verbose_name='Custo Total (R$)'),
+            model_name="manutencao",
+            name="custo",
+            field=models.DecimalField(
+                decimal_places=2,
+                default=0,
+                max_digits=10,
+                verbose_name="Custo Total (R$)",
+            ),
         ),
         migrations.AddField(
-            model_name='manutencao',
-            name='pecas_usadas',
-            field=models.TextField(blank=True, verbose_name='Peças Utilizadas'),
+            model_name="manutencao",
+            name="pecas_usadas",
+            field=models.TextField(blank=True, verbose_name="Peças Utilizadas"),
         ),
     ]

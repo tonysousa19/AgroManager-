@@ -7,13 +7,13 @@ from .models import Manutencao
 
 class ManutencaoListView(ListView):
     model = Manutencao
-    context_object_name = 'manutencoes'
-    
+    context_object_name = "manutencoes"
+
     def get_queryset(self):
         queryset = super().get_queryset()
-        search = self.request.GET.get('search')
-        data_inicio = self.request.GET.get('data_inicio')
-        data_fim = self.request.GET.get('data_fim')
+        search = self.request.GET.get("search")
+        data_inicio = self.request.GET.get("data_inicio")
+        data_fim = self.request.GET.get("data_fim")
 
         if search:
             queryset = queryset.filter(descricao__icontains=search)
@@ -24,19 +24,21 @@ class ManutencaoListView(ListView):
             queryset = queryset.filter(data__lte=parse_date(data_fim))
 
         return queryset
-    
+
+
 class ManutencaoCreateView(CreateView):
     model = Manutencao
-    fields = ['maquina', 'data', 'descricao', 'pecas_usadas', 'custo']
-    template_name = 'manutencoes/manutencao_form.html'
-    success_url = reverse_lazy('lista_manutencoes')
+    fields = ["maquina", "data", "descricao", "pecas_usadas", "custo"]
+    template_name = "manutencoes/manutencao_form.html"
+    success_url = reverse_lazy("lista_manutencoes")
 
 
 class ManutencaoUpdateView(UpdateView):
     model = Manutencao
-    fields = ['maquina', 'data', 'descricao', 'pecas_usadas', 'custo']
-    success_url = reverse_lazy('lista_manutencoes')
+    fields = ["maquina", "data", "descricao", "pecas_usadas", "custo"]
+    success_url = reverse_lazy("lista_manutencoes")
+
 
 class ManutencaoDeleteView(DeleteView):
     model = Manutencao
-    success_url = reverse_lazy('lista_manutencoes')
+    success_url = reverse_lazy("lista_manutencoes")

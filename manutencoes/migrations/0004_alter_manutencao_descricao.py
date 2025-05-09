@@ -6,13 +6,16 @@ from django.db import migrations, models
 class Migration(migrations.Migration):
 
     dependencies = [
-        ('manutencoes', '0003_remove_manutencao_description_manutencao_descricao_and_more'),
+        (
+            "manutencoes",
+            "0003_remove_manutencao_description_manutencao_descricao_and_more",
+        ),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='manutencao',
-            name='descricao',
-            field=models.TextField(verbose_name='Descrição'),
+            model_name="manutencao",
+            name="descricao",
+            field=models.TextField(verbose_name="Descrição"),
         ),
     ]

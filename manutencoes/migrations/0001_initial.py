@@ -9,20 +9,35 @@ class Migration(migrations.Migration):
     initial = True
 
     dependencies = [
-        ('maquinas', '0001_initial'),
+        ("maquinas", "0001_initial"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='Manutencao',
+            name="Manutencao",
             fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('data', models.DateField(verbose_name='Data da Manutenção')),
-                ('description', models.TextField(verbose_name='Descrição')),
-                ('maquina', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='manutencoes', to='maquinas.maquina')),
+                (
+                    "id",
+                    models.BigAutoField(
+                        auto_created=True,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="ID",
+                    ),
+                ),
+                ("data", models.DateField(verbose_name="Data da Manutenção")),
+                ("description", models.TextField(verbose_name="Descrição")),
+                (
+                    "maquina",
+                    models.ForeignKey(
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="manutencoes",
+                        to="maquinas.maquina",
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-data'],
+                "ordering": ["-data"],
             },
         ),
     ]

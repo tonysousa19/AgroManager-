@@ -1,15 +1,17 @@
-from django import forms 
-from .models import Maquina, ImagemMaquina
+from django import forms
+from .models import Maquina, MaquinaImagem
+
 
 class MaquinaForm(forms.ModelForm):
     class Meta:
         model = Maquina
-        fields = ['nome', 'condicao', 'ano', 'numero_de_serie']
+        fields = ["nome", "condicao", "ano", "numero_de_serie"]
 
-class ImagemMaquinaForm(forms.ModelForm):
+
+class MaquinaImagemForm(forms.ModelForm):
     class Meta:
-        model = ImagemMaquina
-        fields = ['imagem']
+        model = MaquinaImagem
+        fields = ["imagem"]
 
         def __str__(self):
-            return f'Imagem da máquina {self.maquina.nome}'
+            return f"Imagem da máquina {self.maquina.nome}"

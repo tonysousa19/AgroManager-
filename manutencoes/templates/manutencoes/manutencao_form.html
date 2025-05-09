@@ -46,7 +46,7 @@
       <a class="bi bi-gear me-2" href="/admin/"> Administração do Sistema</a>
       <a class="bi bi-people-fill me-2" href="#"> Funcionários</a>
       <a class="bi bi-clipboard2-check me-2" href="#"> Emitir relatórios</a>
-      <a class="bi bi-fan me-2" href="{% url 'lista_maquinas' %}"> Máquinas</a>
+      <a class="bi bi-fan me-2" href="{% url 'listar_maquinas' %}"> Máquinas</a>
       <a class="bi bi-tools me-2" href="{% url 'lista_manutencoes' %}"> Manutenções</a>
       <a class="bi bi-arrow-bar-left me-2" href="{% url 'logout' %}"> Logout</a>
     {% elif request.user.cargo == 'gestor' %}
