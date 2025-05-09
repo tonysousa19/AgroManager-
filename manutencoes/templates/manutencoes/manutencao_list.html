@@ -1,0 +1,161 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard - Manutenções</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+    <style>
+        body {
+            overflow-x: hidden;
+        }
+        .sidebar {
+            height: 100vh;
+            position: fixed;
+            width: 250px;
+            background-color: #f8f9fa;
+            padding-top: 1rem;
+            box-shadow: 2.5px 0 10px rgba(0, 0, 0, 0.1);
+        }
+        .sidebar a {
+            display: block;
+            padding: 0.75rem 1.25rem;
+            color: #333;
+            text-decoration: none;
+        }
+        .sidebar a:hover {
+            background-color: #e9ecef;
+        }
+        .main-content {
+            margin-left: 230px;
+            margin-right: 10px;
+            padding: 2rem;
+        }
+
+        .manutencao-card {
+            transition: transform 0.5s ease-in-out;
+            margin-left: 05px;
+            margin-right: 05px;
+        }
+
+        .manutencao-card:hover {
+            transform: scale(1.01);
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+    <!-- SIDEBAR -->
+    <div class="sidebar">
+
+        <h4 class="text-center mb-4">AgroManager</h4>
+
+        {% if request.user.cargo == 'adm' %}
+        <a class="bi bi-house me-2" href="../../home"> Início</a>
+
+        <a class="bi bi-bar-chart-line me-2" href=""> Dashboard</a>
+
+        <a class="bi bi-gear me-2" href="../../admin/"> Administração do Sistema</a>
+
+        <a class="bi bi bi-people-fill me-2" href=""> Funcionários</a>
+
+        <a class="bi bi-clipboard2-check me-2" href="#"> Emitir relatorios</a>
+
+        <a class="bi bi-fan me-2" href="../../maquinas/lista-maquinas"> Máquinas</a>
+
+        <a class="bi bi-tools me-2" href="../../manutencoes/lista-manutencoes"> Manutenções</a>
+
+        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
+
+
+        {% elif request.user.cargo == 'gestor' %}
+        <a class="bi bi-bar-chart-line me-2" href=""> Dashboard</a>
+        <a class="bi bi-clipboard2-check me-2" href="#"> Emitir relatorios</a>
+        <a class="bi bi bi-people-fill me-2" href=""> Funcionários</a>
+        <a class="bi bi-fan me-2" href="#"> Máquinas</a>
+        <a class="bi bi-tools me-2" href="../manutencoes/lista-manutencoes"> Manutenções</a>
+        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
+
+
+        {% elif request.user.cargo == 'func'%}
+        <a class="bi bi-fan me-2" href="#"> Máquinas</a>
+        <a class="bi bi-tools me-2" href="../manutencoes/lista-manutencoes"> Manutenções</a>
+        <a class="bi bi-arrow-bar-left me-2" href="../logout/"> Logout</a>
+
+        {% endif %}
+    </div>
+
+    <!-- MAIN CONTENT -->
+    <div class="main-content">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="text-success">
+                <i class="fas fa-tools"></i> Controle de Manutenções
+            </h2>
+        <form class="d-flex align-items-end mb-3" method="get">
+            <div class="me-2">
+                <label for="data_inicio" class="form-label mb-0">De:</label>
+                <input name="data_inicio" id="data_inicio" class="form-control" type="date" value="{{ request.GET.data_inicio }}">
+            </div>
+            <div class="me-2">
+                <label for="data_fim" class="form-label mb-0">Até:</label>
+                <input name="data_fim" id="data_fim" class="form-control" type="date" value="{{ request.GET.data_fim }}">
+            </div>
+            <div class="me-2">
+                <label for="search" class="form-label mb-0">Buscar:</label>
+                <input name="search" class="form-control" type="search" placeholder="Descrição..." value="{{ request.GET.search }}">
+            </div>
+            <button class="btn btn-success" type="submit" style="height: 38px;">
+                <i class="fas fa-search"></i>
+            </button>
+        </form>
+
+        </div>
+
+        <div class="card shadow-sm">
+            <div class="card-body">
+            <div class="d-flex justify-content-between align-items-center mb-3 manutencoes-recentes">
+                <h5 class="mb-0">Manutenções Recentes</h5>
+                <a href="{% url 'criar_manutencao' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Nova Manutenção
+                </a>
+            </div>
+
+            {% for manutencao in manutencoes %}
+            <div class="border rounded p-3 mb-3 manutencao-card">
+                <div class="d-flex justify-content-between">
+                <h5 class="text-success mb-1">{{ manutencao.maquina }}</h5>
+                <small class="text-muted">{{ manutencao.data|date:"d/m/Y" }}</small>
+                </div>
+                <p class="mb-1">{{ manutencao.descricao }}</p>
+                <p class="text-muted mb-2">
+                <i class="fas fa-cog"></i> {{ manutencao.pecas_usadas }}
+                </p>
+                <div class="d-flex justify-content-between align-items-center">
+                <strong class="text-info">R$ {{ manutencao.custo|floatformat:2 }}</strong>
+                <div>
+                    <a href="{% url 'editar_manutencao' manutencao.id %}" class="me-3 text-decoration-none text-success">
+                    <i class="fas fa-edit"></i> Editar
+                    </a>
+                    <a href="{% url 'deletar_manutencao' manutencao.id %}" class="text-decoration-none text-danger">
+                    <i class="fas fa-trash-alt"></i> Excluir
+                    </a>
+                </div>
+                </div>
+            </div>
+            {% empty %}
+            <p class="text-muted">Nenhuma manutenção encontrada.</p>
+            {% endfor %}
+            </div>
+        </div>
+        </div>
+
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>
