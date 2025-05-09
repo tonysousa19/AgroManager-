@@ -43,10 +43,26 @@ class MaquinaCreateView(CreateView):
     
 
 class MaquinaUpdateView(UpdateView):
-    pass 
+    model = Maquina
+    fields = ['nome', 'condicao', 'ano', 'serial_number']
+    template_name = 'maquinas/maquina_form.html'     
+    success_url = reverse_lazy('lista_maquinas')
+
+    def form_valid(self, form):
+        maquina = form.save()
+
+        if 'imagens' in self.request.FILES:
+            for imagem in self.request.FILES.getlist('imagens'):
+                Maquina.objects.create(maquina=maquina, imagem=imagem)
+
+        return super().form_valid(form)
+    
 
 class MaquinaDeleteView(DeleteView):
-    pass 
+    model = Maquina
+    success_url = reverse_lazy('lista_maquinas')
+    
+     
 
 
 

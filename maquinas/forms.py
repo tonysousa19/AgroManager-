@@ -10,3 +10,6 @@ class ImagemMaquinaForm(forms.ModelForm):
     class Meta:
         model = ImagemMaquina
         fields = ['imagem']
+
+        def __str__(self):
+            return f'Imagem da máquina {self.maquina.nome}'

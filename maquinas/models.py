@@ -22,7 +22,7 @@ class ImagemMaquina(models.Model):
     imagem = models.ImageField(upload_to='maquinas/imagens/')
 
     def __str__(self):
-        return f'Imagem da máquina {self.machine.nome}'
+        return f'Imagem da máquina {self.maquina.nome}'
     
 
     
