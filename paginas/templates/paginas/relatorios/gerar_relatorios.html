@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Geração de Relatórios{% endblock title %}
+{% block content %}
+
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Relatório de Máquinas</title>
+</head>
+<body>
+    <h1>Gerar Relatório de Máquinas e Manutenções</h1>
+
+    <form method="get" action="{% url 'relatorio_pdf' %}" target="_blank">
+        <label for="ano">Ano da Máquina:</label>
+        <select name="ano" id="ano">
+            <option value="">Todos</option>
+            {% for ano in anos %}
+                <option value="{{ ano }}">{{ ano }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="condicao">Condição:</label>
+        <select name="condicao" id="condicao">
+            <option value="">Todas</option>
+            {% for condicao in condicoes %}
+                <option value="{{ condicao }}">{{ condicao }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="data_inicio">Data de Manutenção (início):</label>
+        <input type="date" name="data_inicio">
+
+        <label for="data_fim">Data de Manutenção (fim):</label>
+        <input type="date" name="data_fim">
+
+        <button type="submit">Gerar Relatório PDF</button>
+    </form>
+</body>
+</html>
+
+
+{% endblock content %}
+
+
+

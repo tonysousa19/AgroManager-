@@ -1,0 +1,81 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+
+<div class="container my-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2 class="mb-0">Máquinas Cadastradas</h2>
+        <a href="{% url 'relatorios_manutencoes' %}" class="btn btn-outline-primary">
+            📄 Gerar Relatório PDF
+        </a>
+    </div>
+
+    {% if maquinas %}
+    <div class="row row-cols-1 row-cols-md-2 row-cols-lg-3 g-4">
+        {% for maquina in maquinas %}
+        <div class="col">
+            <div class="card shadow-sm h-100 border-0">
+                <div class="card-header bg-light">
+                    <h5 class="card-title mb-0">{{ maquina.nome }}</h5>
+                </div>
+
+                {% if maquina.imagens.all %}
+                <div id="carouselMaquina{{ maquina.pk }}" class="carousel slide" data-bs-ride="carousel">
+                    <div class="carousel-inner">
+                        {% for imagem in maquina.imagens.all %}
+                        <div class="carousel-item {% if forloop.first %}active{% endif %}">
+                            <img src="{{ imagem.imagem.url }}" class="d-block w-100" style="height: 300px; object-fit: cover;" alt="Imagem da máquina">
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% if maquina.imagens.count > 1 %}
+                    <button class="carousel-control-prev" type="button" data-bs-target="#carouselMaquina{{ maquina.pk }}" data-bs-slide="prev">
+                        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Anterior</span>
+                    </button>
+                    <button class="carousel-control-next" type="button" data-bs-target="#carouselMaquina{{ maquina.pk }}" data-bs-slide="next">
+                        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                        <span class="visually-hidden">Próximo</span>
+                    </button>
+                    {% endif %}
+                </div>
+                {% endif %}
+
+                <div class="card-body">
+                    <p class="mb-2">
+                        <span class="fw-bold">Condição:</span> 
+                        <span class="badge {% if maquina.condicao == 'Nova' %}bg-success{% else %}bg-warning text-dark{% endif %}">
+                            {{ maquina.condicao }}
+                        </span><br>
+                        <span class="fw-bold">Ano:</span> {{ maquina.ano }}<br>
+                        <span class="fw-bold">Nº Série:</span> {{ maquina.numero_de_serie }}
+                    </p>
+
+                    <div class="d-flex justify-content-end gap-2">
+                        {# Excluir botão visível se necessário #}
+                        <a href="{% url 'excluir_maquinas' pk=maquina.pk %}" class="btn btn-sm btn-outline-danger">
+                         Excluir
+                        </a>
+                         <a href="{% url 'editar_maquinas' pk=maquina.pk %}" class="btn btn-sm btn-outline-primary">
+                         Editar
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+
+    {% else %}
+    <div class="text-center mt-5">
+        <img src="{% static 'no-data.svg' %}" alt="Sem dados" width="200">
+        <p class="text-muted mt-3">Nenhuma máquina cadastrada...</p>
+    </div>
+    {% endif %}
+
+    <a href="{% url 'cadastrar_maquinas' %}" class="btn btn-primary btn-lg position-fixed bottom-0 end-0 m-4 rounded-circle shadow" title="Nova Máquina">
+        <span style="font-size: 1.5rem;">+</span>
+    </a>
+</div>
+
+{% endblock content %}

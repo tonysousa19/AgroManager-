@@ -1,0 +1,88 @@
+{% extends "base.html" %}
+
+{% block content %}
+<style>
+
+    .card:hover {
+    transform: scale(1.01);
+    transition: 0.2s ease-in-out;
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+</style>
+<h1 class="display-5 fw-bold">Bem-vindo ao <span class="text-success">AgroManager</span>!</h1>
+<p class="lead">Um sistema completo para a <strong>Gestão de Máquinas Agrícolas</strong>, desenvolvido para otimizar o controle, manutenção e operação de seus ativos no campo.</p>
+    
+<hr class="my-4">
+
+<h4 class="mt-4">Módulos do Sistema</h4>
+<div class="row row-cols-1 row-cols-md-2 g-4 mt-2">
+
+    <div class="col">
+        <a href="{% url 'ver_dashboard' %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-bar-chart-line text-success"></i> Dashboard</h5>
+                    <p class="card-text">Resumo visual sobre o uso e manutenção das máquinas.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="../../admin/" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-gear text-success"></i> Administração do Sistema</h5>
+                    <p class="card-text">Gerenciamento de usuários, permissões e dados administrativos.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="{% url 'listar_usuarios' %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-people-fill text-success"></i> Funcionários</h5>
+                    <p class="card-text">Cadastro e gerenciamento de usuários e equipes da operação.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="{% url 'relatorios_manutencoes' %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-clipboard2-check text-success"></i> Emitir Relatórios</h5>
+                    <p class="card-text">Geração de relatórios PDF sobre máquinas e manutenções.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="{% url 'listar_maquinas' %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-fan text-success"></i> Máquinas</h5>
+                    <p class="card-text">Cadastro e consulta de máquinas agrícolas.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+    <div class="col">
+        <a href="{% url 'listar_manutencoes' %}" class="text-decoration-none text-dark">
+            <div class="card h-100 shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title"><i class="bi bi-tools text-success"></i> Manutenções</h5>
+                    <p class="card-text">Histórico de manutenções realizadas nas máquinas.</p>
+                </div>
+            </div>
+        </a>
+    </div>
+
+</div>
+{% endblock content %}
