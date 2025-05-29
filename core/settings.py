@@ -14,7 +14,15 @@ SECRET_KEY = "django-insecure-(5@)&7k#2qj%)6=)hxz$id_!=ci5bqo59%ka7s6@_i67ji@s8&
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [
+    '*'
+
+]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    'https://7bcb-201-149-108-142.ngrok-free.app',
+]
 
 
 # Application definition
@@ -127,3 +135,4 @@ MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media")
 LOGIN_URL = "login"  # ou a URL name do seu login_view
 STATIC_ROOT = BASE_DIR / "staticfiles"
+

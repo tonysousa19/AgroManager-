@@ -1,8 +1,5 @@
 {% extends "base.html" %}
-{% block title %}
-Confirmar Exclusão
-{% endblock title %}
-
+{% block title %} Confirmar Exclusão {% endblock title%} 
 {% block content %}
 <div class="container mt-5 text-center">
   <div class="card shadow-sm p-4">
@@ -11,7 +8,9 @@ Confirmar Exclusão
 
     <form method="post">
       {% csrf_token %}
-      <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary me-2">Cancelar</a>
+      <a href="{% url 'listar_usuarios' %}" class="btn btn-secondary me-2"
+        >Cancelar</a
+      >
       <button type="submit" class="btn btn-danger">Confirmar Exclusão</button>
     </form>
   </div>

@@ -3,12 +3,16 @@ from django.views.generic import ListView, CreateView, UpdateView, DeleteView, V
 from django.urls import reverse_lazy
 from django.utils.dateparse import parse_date
 from .models import Manutencao
+from login.mixins import PermissaoRequiredMixin
 
 
-class ManutencaoListView(ListView):
+
+class ManutencaoListView(PermissaoRequiredMixin, ListView):
     model = Manutencao
     context_object_name = "manutencoes"
     template_name = "paginas/manutencoes/manutencao_list.html"
+    permissao_necessaria = "registrar_manutencao"
+
 
     def get_queryset(self):
         queryset = super().get_queryset()
@@ -27,21 +31,27 @@ class ManutencaoListView(ListView):
         return queryset
 
 
-class ManutencaoCreateView(CreateView):
+class ManutencaoCreateView(PermissaoRequiredMixin, CreateView):
     model = Manutencao
     fields = ["maquina", "data", "descricao", "pecas_usadas", "custo"]
     template_name = "paginas/manutencoes/manutencao_form.html"
     success_url = reverse_lazy("listar_manutencoes")
+    permissao_necessaria = "registrar_manutencao"
 
 
-class ManutencaoUpdateView(UpdateView):
+
+class ManutencaoUpdateView(PermissaoRequiredMixin, UpdateView):
     model = Manutencao
     fields = ["maquina", "data", "descricao", "pecas_usadas", "custo"]
     template_name = "paginas/manutencoes/manutencao_form.html"
     success_url = reverse_lazy("listar_manutencoes")
+    permissao_necessaria = "gerenciar_manutencoes"
 
 
-class ManutencaoDeleteView(DeleteView):
+
+class ManutencaoDeleteView(PermissaoRequiredMixin, DeleteView):
     model = Manutencao
     success_url = reverse_lazy("listar_manutencoes")
     template_name = "paginas/manutencoes/manutencao_confirm_delete.html"
+    permissao_necessaria = "gerenciar_manutencoes"
+

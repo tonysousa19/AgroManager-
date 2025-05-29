@@ -1,46 +1,49 @@
 {% extends "base.html" %}
+{% load static %}
 
-{% block title %}Geração de Relatórios{% endblock title %}
+{% block title %}Filtro de Relatórios{% endblock title %}
+
 {% block content %}
+<div class="container mt-5">
+    <h2 class="mb-4">Gerar Relatório de Máquinas e Manutenções</h2>
 
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Relatório de Máquinas</title>
-</head>
-<body>
-    <h1>Gerar Relatório de Máquinas e Manutenções</h1>
+    <form method="get" action="{% url 'gerar_relatorios_manutencoes' %}">
+        <div class="row g-3">
+            <div class="col-md-4">
+                <label for="nome" class="form-label">Nome da Máquina</label>
+                <input type="text" class="form-control" id="nome" name="nome" placeholder="Ex: Escavadeira" value="{{ request.GET.nome }}">
+            </div>
 
-    <form method="get" action="{% url 'relatorio_pdf' %}" target="_blank">
-        <label for="ano">Ano da Máquina:</label>
-        <select name="ano" id="ano">
-            <option value="">Todos</option>
-            {% for ano in anos %}
-                <option value="{{ ano }}">{{ ano }}</option>
-            {% endfor %}
-        </select>
+            <div class="col-md-4">
+                <label for="condicao" class="form-label">Condição</label>
+                <select class="form-select" id="condicao" name="condicao">
+                    <option value="">Todas</option>
+                    <option value="Nova" {% if request.GET.condicao == "Nova" %}selected{% endif %}>Nova</option>
+                    <option value="Usada" {% if request.GET.condicao == "Usada" %}selected{% endif %}>Usada</option>
+                </select>
+            </div>
 
-        <label for="condicao">Condição:</label>
-        <select name="condicao" id="condicao">
-            <option value="">Todas</option>
-            {% for condicao in condicoes %}
-                <option value="{{ condicao }}">{{ condicao }}</option>
-            {% endfor %}
-        </select>
+            <div class="col-md-4">
+                <label for="ano" class="form-label">Ano</label>
+                <input type="number" class="form-control" id="ano" name="ano" min="1900" max="2100" value="{{ request.GET.ano }}">
+            </div>
 
-        <label for="data_inicio">Data de Manutenção (início):</label>
-        <input type="date" name="data_inicio">
+            <div class="col-md-6">
+                <label for="data_inicio" class="form-label">Data Inicial da Manutenção</label>
+                <input type="date" class="form-control" id="data_inicio" name="data_inicio" value="{{ request.GET.data_inicio }}">
+            </div>
 
-        <label for="data_fim">Data de Manutenção (fim):</label>
-        <input type="date" name="data_fim">
+            <div class="col-md-6">
+                <label for="data_fim" class="form-label">Data Final da Manutenção</label>
+                <input type="date" class="form-control" id="data_fim" name="data_fim" value="{{ request.GET.data_fim }}">
+            </div>
+        </div>
 
-        <button type="submit">Gerar Relatório PDF</button>
+        <div class="mt-4 d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary">
+                Gerar PDF <i class="bi bi-file-earmark-pdf-fill"></i>
+            </button>
+        </div>
     </form>
-</body>
-</html>
-
-
-{% endblock content %}
-
-
-
+</div>
+{% endblock %}

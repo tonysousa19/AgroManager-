@@ -1,14 +1,14 @@
 from django.shortcuts import render
 from django.contrib.auth.decorators import login_required
 from login.models import User
-from maquinas.models import Maquina  # ou MáquinaAgrícola, depende do seu nome real
-from manutencoes.models import Manutencao  # ajuste o nome se for diferente
+from maquinas.models import Maquina 
+from manutencoes.models import Manutencao 
 from django.http import HttpResponseForbidden
 
 @login_required
 def dashboard_view(request):
     if not request.user.has_permissao("ver_dashboard"):
-        return HttpResponseForbidden("Você não tem permissão para acessar o dashboard.")
+        return render(request, 'paginas/permissao/falha_permissao.html')
     
     total_usuarios = User.objects.count()
     total_maquinas = Maquina.objects.count()

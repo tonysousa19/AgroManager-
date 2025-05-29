@@ -1,10 +1,10 @@
 # paginas/views.py
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
-from django.urls import reverse_lazy
 from login.models import User
 from .forms import UsuarioForm
 from login.mixins import PermissaoRequiredMixin
 from django.db.models import Q
+from django.urls import reverse_lazy
 
 
 class UsuarioListView(PermissaoRequiredMixin, ListView):
