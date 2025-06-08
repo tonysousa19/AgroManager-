@@ -1,69 +1,102 @@
 {% extends "base.html" %}
 {% load static %}
+
+{% block title %}Controle de Manutenções{% endblock %}
+
 {% block content %}
+<style>
+  .manutencao-card {
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f8f9fa;
+  }
 
-        <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="text-success">
-                <i class="fas fa-tools"></i> Controle de Manutenções
-            </h2>
-        <form class="d-flex align-items-end mb-3" method="get">
-            <div class="me-2">
-                <label for="data_inicio" class="form-label mb-0">De:</label>
-                <input name="data_inicio" id="data_inicio" class="form-control" type="date" value="{{ request.GET.data_inicio }}">
-            </div>
-            <div class="me-2">
-                <label for="data_fim" class="form-label mb-0">Até:</label>
-                <input name="data_fim" id="data_fim" class="form-control" type="date" value="{{ request.GET.data_fim }}">
-            </div>
-            <div class="me-2">
-                <label for="search" class="form-label mb-0">Buscar:</label>
-                <input name="search" class="form-control" type="search" placeholder="Descrição..." value="{{ request.GET.search }}">
-            </div>
-            <button class="btn btn-success" type="submit" style="height: 38px;">
-                <i class="fas fa-search">Buscar com filtros</i>
-            </button>
-        </form>
+  .manutencao-card:hover {
+    transform: scale(1.015);
+    box-shadow: 0 0.75rem 1.5rem rgba(0, 0, 0, 0.08);
+  }
 
+  .fade-in {
+    animation: fadeInUp 0.5s ease forwards;
+    opacity: 0;
+  }
+
+  @keyframes fadeInUp {
+    to {
+      transform: translateY(0);
+      opacity: 1;
+    }
+    from {
+      transform: translateY(10px);
+      opacity: 0;
+    }
+  }
+</style>
+
+<div class="container mt-5">
+  <div class="d-flex justify-content-between align-items-end mb-4">
+    <div>
+      <h2 class="text-success fw-bold mb-0">
+        <i class="bi bi-tools"></i> Controle de Manutenções
+      </h2>
+    </div>
+
+    <form class="d-flex align-items-end flex-wrap gap-2" method="get">
+      <div>
+        <label for="data_inicio" class="form-label mb-0">De:</label>
+        <input name="data_inicio" id="data_inicio" class="form-control" type="date" value="{{ request.GET.data_inicio }}">
+      </div>
+      <div>
+        <label for="data_fim" class="form-label mb-0">Até:</label>
+        <input name="data_fim" id="data_fim" class="form-control" type="date" value="{{ request.GET.data_fim }}">
+      </div>
+      <div>
+        <label for="search" class="form-label mb-0">Buscar:</label>
+        <input name="search" class="form-control" type="search" placeholder="Descrição ou peça..." value="{{ request.GET.search }}">
+      </div>
+      <div>
+        <label class="form-label d-block mb-0 invisible">Buscar</label>
+        <button class="btn btn-outline-success" type="submit">
+          <i class="bi bi-search"></i> Buscar
+        </button>
+      </div>
+    </form>
+  </div>
+
+  <div class="card shadow-sm fade-in">
+    <div class="card-body">
+      <div class="d-flex justify-content-between align-items-center mb-3">
+        <h5 class="mb-0 fw-semibold">Manutenções Recentes</h5>
+        <a href="{% url 'criar_manutencoes' %}" class="btn btn-success">
+          <i class="bi bi-plus-lg"></i> Nova Manutenção
+        </a>
+      </div>
+
+      {% for manutencao in manutencoes %}
+        <div class="border rounded p-3 mb-3 manutencao-card fade-in">
+          <div class="d-flex justify-content-between">
+            <h5 class="text-success mb-1">{{ manutencao.maquina }}</h5>
+            <small class="text-muted">{{ manutencao.data|date:"d/m/Y" }}</small>
+          </div>
+          <p class="mb-1">{{ manutencao.descricao }}</p>
+          <p class="text-muted mb-2">
+            <i class="bi bi-tools"></i> {{ manutencao.pecas_usadas }}
+          </p>
+          <div class="d-flex justify-content-between align-items-center">
+            <strong class="text-info">R$ {{ manutencao.custo|floatformat:2 }}</strong>
+            <div>
+              <a href="{% url 'editar_manutencao' manutencao.id %}" class="btn btn-sm btn-outline-success me-2">
+                <i class="bi bi-pencil-fill"></i> Editar
+              </a>
+              <a href="{% url 'deletar_manutencao' manutencao.id %}" class="btn btn-sm btn-outline-danger">
+                <i class="bi bi-trash-fill"></i> Excluir
+              </a>
+            </div>
+          </div>
         </div>
-
-        <div class="card shadow-sm">
-            <div class="card-body">
-            <div class="d-flex justify-content-between align-items-center mb-3 manutencoes-recentes">
-                <h5 class="mb-0">Manutenções Recentes</h5>
-                <a href="{% url 'criar_manutencoes' %}" class="btn btn-success">
-                <i class="fas fa-plus"></i> Nova Manutenção
-                </a>
-            </div>
-
-            {% for manutencao in manutencoes %}
-            <div class="border rounded p-3 mb-3 manutencao-card">
-                <div class="d-flex justify-content-between">
-                <h5 class="text-success mb-1">{{ manutencao.maquina }}</h5>
-                <small class="text-muted">{{ manutencao.data|date:"d/m/Y" }}</small>
-                </div>
-                <p class="mb-1">{{ manutencao.descricao }}</p>
-                <p class="text-muted mb-2">
-                <i class="fas fa-cog"></i> {{ manutencao.pecas_usadas }}
-                </p>
-                <div class="d-flex justify-content-between align-items-center">
-                <strong class="text-info">R$ {{ manutencao.custo|floatformat:2 }}</strong>
-                <div>
-                    <a href="{% url 'editar_manutencao' manutencao.id %}" class="me-3 text-decoration-none text-success">
-                    <i class="fas fa-edit"></i> Editar
-                    </a>
-                    <a href="{% url 'deletar_manutencao' manutencao.id %}" class="text-decoration-none text-danger">
-                    <i class="fas fa-trash-alt"></i> Excluir
-                    </a>
-                </div>
-                </div>
-            </div>
-            {% empty %}
-            <p class="text-muted">Nenhuma manutenção encontrada.</p>
-            {% endfor %}
-            </div>
-        </div>
-        </div>
-
-        </div>
-
-{% endblock content %}
+      {% empty %}
+        <p class="text-muted text-center">Nenhuma manutenção encontrada.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}
